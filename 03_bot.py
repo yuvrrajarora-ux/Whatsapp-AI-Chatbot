@@ -1,37 +1,39 @@
 import pyautogui
 import time
-import pyperclip   # to read clipboard text
+import pyperclip
 from openai import OpenAI
 import os
-os.environ["OPENAI_API_KEY"] = "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"
+
+# Set your API key via environment variable or replace this placeholder locally
+os.environ["OPENAI_API_KEY"] = "ENTER_YOUR_API_KEY_HERE"
 
 client = OpenAI()
 
-
 time.sleep(2)  # delay to switch window
 
-# Step 1: Click on icon at (1294, 1044)
+# Step 1: Click on WhatsApp icon (update coordinates as needed)
 pyautogui.click(1294, 1044)
 time.sleep(1)
 
-# Step 2: Drag to select text (UPDATED COORDINATES)
+# Step 2: Drag to select chat text
 pyautogui.moveTo(747, 244)
 pyautogui.dragTo(1007, 958, duration=1, button='left')
 time.sleep(0.5)
 
-# Step 3: Copy
+# Step 3: Copy selected text
 pyautogui.hotkey('ctrl', 'c')
 pyautogui.click(1007, 958)
 time.sleep(0.5)
 
-# Step 4: Store in variable
+# Step 4: Store copied chat
 chat_history = pyperclip.paste()
 print("Copied Text:\n", chat_history)
 
+# Generic, privacy-safe prompt
 prompt = (
-    "You are Yuvrraj from India. You speak Hinglish (Hindi+English), "
-    "you code, and you respond casually like the real chat above.\n"
-    "Analyze the chat history below and reply naturally in Yuvrraj's style:\n\n"
+    "You are a friendly and natural conversational chatbot. "
+    "Read the chat history below and generate the next reply in a casual, human-like tone. "
+    "The reply should be appropriate, concise, and context-aware.\n\n"
     + chat_history +
     "\nYour reply:"
 )
@@ -43,13 +45,14 @@ response = client.responses.create(
 
 response = response.output_text
 
+# Copy AI response back to clipboard
+pyperclip.copy(response)
 
-pyperclip.copy(response)   # copy response to clipboard
-
-pyautogui.click(1281, 961)        # ⬅ click chat input location
+# Step 5: Paste and send reply
+pyautogui.click(1281, 961)  # chat input box
 time.sleep(0.3)
 
-pyautogui.hotkey("ctrl", "v")     # paste message
+pyautogui.hotkey("ctrl", "v")
 time.sleep(0.2)
 
-pyautogui.press("enter")   
+pyautogui.press("enter")
